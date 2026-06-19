@@ -19,19 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const tiltElements = document.querySelectorAll('.project-card, .skill-card, #dossier-portrait, #hero-portal');
 
   // --- LOADER CONTROL (Genjutsu Zoom Transition) ---
-  window.addEventListener('load', () => {
-    // Assets are ready, prompt user to enter the Genjutsu
-    if (loaderStatus) {
+  const revealEnterButton = () => {
+    // Check if the loader button has not been shown already
+    if (loaderStatus && loaderStatus.textContent !== 'Genjutsu Aligned.') {
       loaderStatus.textContent = 'Genjutsu Aligned.';
       loaderStatus.style.textShadow = '0 0 15px var(--accent-orange)';
+      
+      setTimeout(() => {
+        if (enterBtn) {
+          enterBtn.classList.add('show');
+        }
+      }, 300);
     }
+  };
 
-    setTimeout(() => {
-      if (enterBtn) {
-        enterBtn.classList.add('show');
-      }
-    }, 500);
-  });
+  // 1. Reveal button when all assets are fully loaded (images, fonts, stylesheets)
+  window.addEventListener('load', revealEnterButton);
+
+  // 2. Fallback: Force reveal the button after 3 seconds in case of slow mobile connections
+  setTimeout(revealEnterButton, 3000);
 
   // Handle click on Enter Button
   if (enterBtn && loader) {
